@@ -1,0 +1,390 @@
+openapi: 3.0.0
+info:
+  title: Insurance API
+  description: API for managing insurance plans and claims
+  version: 1.0.0
+paths:
+  /create-plan:
+    post:
+      summary: Add a new insurance plan for the persona
+      description: Add a new insurance plan for the persona.
+      operationId: createPlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personaID:
+                  type: string
+                  example: "123456"
+                dependents:
+                  type: array
+                  items:
+                    type: string
+                  example: ["7891011", "12131415"]
+              required:
+                - personaID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: successful
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+  /add-dependent:
+    post:
+      summary: Add a child as a dependent on their parent’s insurance plan
+      description: Add a child as a dependent on their parent’s insurance plan. The parent must be specified, as a child can only be placed on a single parent’s plan.
+      operationId: addDependent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                childID:
+                  type: string
+                  example: "7891011"
+                parentID:
+                  type: string
+                  example: "123456"
+              required:
+                - childID
+                - parentID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: successful
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+  /pay-claim:
+    post:
+      summary: Pay out a claim
+      description: This endpoint is used by healthcare for the insurance claim requested from a persona. We pay the full claim amount up to a certain amount.
+      operationId: payClaim
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personaID:
+                  type: string
+                  example: "123456"
+                claimAmount:
+                  type: number
+                  format: float
+                  example: 1500.00
+              required:
+                - personaID
+                - claimAmount
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: successful
+                  claimAmountPaid:
+                    type: number
+                    format: float
+                    example: 1500.00
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+  /close-plan:
+    put:
+      summary: Close a plan
+      description: This endpoint will be called when a persona dies. We will close their plan here.
+      operationId: closePlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personaID:
+                  type: string
+                  example: "123456"
+              required:
+                - personaID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: successful
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+  /graduate:
+    post:
+      summary: Graduate a persona
+      description: This is the endpoint for when a persona becomes an adult and they need their own life insurance.
+      operationId: graduatePersona
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personaID:
+                  type: string
+                  example: "123456"
+              required:
+                - personaID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: successful
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+  /pay:
+    post:
+      summary: Pay insurance
+      description: This is the endpoint the Persona will use to pay for their health insurance that month. If they cannot make a payment, their account will be inactive until they pay again.
+      operationId: payInsurance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personaID:
+                  type: string
+                  example: "123456"
+              required:
+                - personaID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: successful
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
