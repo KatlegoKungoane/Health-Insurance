@@ -1,52 +1,59 @@
 openapi: 3.0.0
 info:
   title: Insurance API
-  description: API for managing insurance plans and claims
+  description: API for managing health insurance plans and claims.
   version: 1.0.0
 paths:
   /create-plan:
     post:
-      summary: Add a new insurance plan for the persona
-      description: Add a new insurance plan for the persona.
+      summary: Add a new insurance plan for the persona / personas
+      description: Add a new insurance plan for the persona / personas.
       operationId: createPlan
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                personaID:
-                  type: string
-                  example: "123456"
-                dependents:
-                  type: array
-                  items:
+              type: array
+              items:
+                type: object
+                properties:
+                  personaID:
                     type: string
-                  example: ["7891011", "12131415"]
+                    example: "2123"
+                  dependents:
+                    type: array
+                    items:
+                      type: string
+                    example: ["1231", "123123"]
               required:
                 - personaID
+                - dependents
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: successful
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: successful
         '400':
           description: Unsuccessful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: unsuccessful
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: unsuccessful
         '500':
           description: Server error
           content:
@@ -143,15 +150,17 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                personaID:
-                  type: string
-                  example: "123456"
-                claimAmount:
-                  type: number
-                  format: float
-                  example: 1500.00
+              type: array
+              items:
+                type: object
+                properties:
+                  personaID:
+                    type: string
+                    example: "123456"
+                  claimAmount:
+                    type: number
+                    format: float
+                    example: 1500.00
               required:
                 - personaID
                 - claimAmount
@@ -161,25 +170,29 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: successful
-                  claimAmountPaid:
-                    type: number
-                    format: float
-                    example: 1500.00
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: successful
+                    claimAmountPaid:
+                      type: number
+                      format: float
+                      example: 1500.00
         '400':
           description: Unsuccessful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: unsuccessful
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: unsuccessful
         '500':
           description: Server error
           content:
@@ -212,34 +225,40 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                personaID:
-                  type: string
-                  example: "123456"
-              required:
-                - personaID
+              type: array
+              items:
+                type: object
+                properties:
+                  personaID:
+                    type: string
+                    example: "123456"
+                required:
+                  - personaID
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: successful
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: successful
         '400':
           description: Unsuccessful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: unsuccessful
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: unsuccessful
         '500':
           description: Server error
           content:
@@ -272,34 +291,40 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                personaID:
-                  type: string
-                  example: "123456"
-              required:
-                - personaID
+              type: array
+              items:
+                type: object
+                properties:
+                  personaID:
+                    type: string
+                    example: "123456"
+                required:
+                  - personaID
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: successful
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: successful
         '400':
           description: Unsuccessful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: unsuccessful
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: unsuccessful
         '500':
           description: Server error
           content:
@@ -322,11 +347,11 @@ paths:
                     example: unauthorized
       security:
         - api_key: []
-  /pay:
+  /persona-information:
     post:
-      summary: Pay insurance
-      description: This is the endpoint the Persona will use to pay for their health insurance that month. If they cannot make a payment, their account will be inactive until they pay again.
-      operationId: payInsurance
+      summary: Get Persona Information
+      description: This endpoint will be used by the persona team to give us daily information on the persona’s.
+      operationId: getPersonaInformation
       requestBody:
         required: true
         content:
@@ -334,11 +359,10 @@ paths:
             schema:
               type: object
               properties:
-                personaID:
+                TBD:
                   type: string
-                  example: "123456"
               required:
-                - personaID
+                - TBD
       responses:
         '200':
           description: Successful operation
