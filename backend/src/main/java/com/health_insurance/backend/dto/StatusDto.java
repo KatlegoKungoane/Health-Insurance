@@ -2,7 +2,7 @@ package com.health_insurance.backend.dto;
 
 import java.util.List;
 
-import com.health_insurance.backend.model.CoverPlan;
+import com.health_insurance.backend.model.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoverPlanDto {
+public class StatusDto {
     
-    private List<CoverPlan> coverPlans;
+    private List<Status> status;
 }
