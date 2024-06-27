@@ -1,0 +1,282 @@
+openapi: 3.0.0
+info:
+  title: Insurance API
+  description: API for managing health insurance plans and claims.
+  version: 1.0.0
+paths:
+  /create-plan:
+    post:
+      summary: Add a new insurance plan for the persona / personas
+      description: Add a new insurance plan for the persona / personas.
+      operationId: createPlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  personaID:
+                    type: string
+                    example: "2123"
+                  dependents:
+                    type: array
+                    items:
+                      type: string
+                    example: ["1231", "123123"]
+              required:
+                - personaID
+                - dependents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: successful
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+  /add-dependent:
+    post:
+      summary: Add a child as a dependent on their parent’s insurance plan
+      description: Add a child as a dependent on their parent’s insurance plan. The parent must be specified, as a child can only be placed on a single parent’s plan.
+      operationId: addDependent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                childID:
+                  type: string
+                  example: "7891011"
+                parentID:
+                  type: string
+                  example: "123456"
+              required:
+                - childID
+                - parentID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: successful
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+  /pay-claim:
+    post:
+      summary: Pay out a claim
+      description: This endpoint is used by healthcare for the insurance claim requested from a persona. We pay the full claim amount up to a certain amount.
+      operationId: payClaim
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  personaID:
+                    type: string
+                    example: "123456"
+                  claimAmount:
+                    type: number
+                    format: float
+                    example: 1500.00
+              required:
+                - personaID
+                - claimAmount
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: successful
+                    claimAmountPaid:
+                      type: number
+                      format: float
+                      example: 1500.00
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+  /persona-information:
+    post:
+      summary: Get Persona Information
+      description: This endpoint will be used by the persona team to give us daily information on the personas. This will include information of when persona's become adults and when they die.
+      operationId: getPersonaInformation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                TBD:
+                  type: string
+              required:
+                - TBD
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: successful
+        '400':
+          description: Unsuccessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unsuccessful
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: unauthorized
+      security:
+        - api_key: []
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
