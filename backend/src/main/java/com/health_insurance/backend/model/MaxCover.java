@@ -1,5 +1,7 @@
 package com.health_insurance.backend.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,17 +13,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CoverPlan")
-public class CoverPlan {
+@Table(name = "MaxCover")
+public class MaxCover {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long coverPlanID;
+    private Long maxCoverID;
 
-    @Column(name = "personaID", nullable = false)
-    private Long personaID;
-
-    @ManyToOne
-    @JoinColumn(name = "statusID", nullable = false)
-    private Status status;
+    @Column(name = "maxCover", precision = 10, scale = 2)
+    private BigDecimal maxCover;
 }

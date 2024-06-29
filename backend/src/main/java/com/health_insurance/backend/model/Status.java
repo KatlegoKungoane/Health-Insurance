@@ -11,17 +11,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CoverPlan")
-public class CoverPlan {
+@Table(name = "Status", uniqueConstraints = @UniqueConstraint(name = "uq_status_name", columnNames = "name"))
+public class Status {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long coverPlanID;
+    private Long statusID;
 
-    @Column(name = "personaID", nullable = false)
-    private Long personaID;
-
-    @ManyToOne
-    @JoinColumn(name = "statusID", nullable = false)
-    private Status status;
+    @Column(name = "name", nullable = false, length = 10)
+    private String name;
 }
