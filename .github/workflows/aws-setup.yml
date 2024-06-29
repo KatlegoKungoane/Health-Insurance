@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - Alex/Terraform
     paths:
       - 'terraform/**'
       - '.github/workflows/aws-setup.yml'
