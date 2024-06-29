@@ -5,7 +5,7 @@ mandatory_tags = {
 
 account_number = "574836245203"
 
-certificate = "51456bea-3d96-4f9d-a893-904c29d58afe" //
+certificate_api = "40d2725e-4bb8-410e-bab4-c823767ebccd"
 
 repo = "BBD-Health-Insurance/Health-Insurance"
 

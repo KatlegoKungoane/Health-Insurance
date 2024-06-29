@@ -97,11 +97,11 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 resource "aws_db_instance" "db" {
   identifier                  = "${var.project_name}-db"
   allocated_storage           = 20
-  engine                      = "postgres"
-  engine_version              = "16"
+  engine                      = "sqlserver-ex"
+  engine_version              = "16.00.4095.4.v1"
   instance_class              = "db.t3.micro"
   publicly_accessible         = true
-  username                    = "postgres"
+  username                    = "admin"
   multi_az                    = false # Free tier supports only single AZ
   manage_master_user_password = true  #Fetch password from console
   apply_immediately           = true
@@ -229,14 +229,135 @@ resource "aws_elastic_beanstalk_environment" "web_env" {
   setting {
     namespace = "aws:elbv2:listener:443"
     name      = "SSLCertificateArns"
-    value     = "arn:aws:acm:eu-west-1:574836245203:certificate/51456bea-3d96-4f9d-a893-904c29d58afe" # Replace with your SSL certificate ARN
+    value     = "arn:aws:acm:eu-west-1:574836245203:certificate/d2823834-c26d-48f8-b5f8-841bfef65711" # Replace with your SSL certificate ARN
   }
 
   # Optional: redirect HTTP to HTTPS
   # setting {
   #   namespace = "aws:elbv2:listener:80"
   #   name      = "Rules"
-  #   value     = "path-pattern / -> forward: 443, path-pattern /* -> redirect: https://rudolph-sucks.projects.bbdgrad.com#{path}?#{query}"
+  #   value     = "path-pattern / -> forward: 443, path-pattern /* -> redirect: https://api.health.projects.bbdgrad.com#{path}?#{query}"
+  # }
+
+}
+
+resource "aws_elastic_beanstalk_environment" "api-web_env" {
+  name                = "${var.project_name}-api-web-env"
+  application         = aws_elastic_beanstalk_application.web_app.name
+  solution_stack_name = "64bit Amazon Linux 2023 v4.3.2 running Docker"
+  cname_prefix        = "${var.project_name}-api-web"
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "VPCId"
+    value     = aws_vpc.vpc.id
+  }
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "Subnets"
+    value     = join(",", aws_subnet.private_subnets[*].id)
+  }
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "ELBSubnets"
+    value     = join(",", aws_subnet.public_subnets[*].id)
+  }
+  setting {
+    namespace = "aws:ec2:instances"
+    name      = "InstanceTypes"
+    value     = "t3.micro"
+  }
+  # setting {
+  #   namespace = "aws:ec2:vpc"
+  #   name      = "AssociatePublicIpAddress"
+  #   value     = true
+  # }
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MaxSize"
+    value     = "2"
+  }
+
+  setting {
+    namespace = "aws:elbv2:loadbalancer"
+    name      = "IdleTimeout"
+    value     = "60"
+  }
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = aws_iam_instance_profile.ec2_instance_profile.name
+  }
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "SecurityGroups"
+    value     = aws_security_group.eb_security_group_web.id
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "LoadBalancerType"
+    value     = "application"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "ServiceRole"
+    value     = aws_iam_role.eb_service_role.name
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:healthreporting:system"
+    name      = "SystemType"
+    value     = "basic"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:443"
+    name      = "Protocol"
+    value     = "HTTPS"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:443"
+    name      = "ListenerEnabled"
+    value     = "true"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:80"
+    name      = "DefaultProcess"
+    value     = "default"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:80"
+    name      = "Protocol"
+    value     = "HTTP"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:80"
+    name      = "ListenerEnabled"
+    value     = "true"
+  }
+
+  setting {
+    namespace = "aws:elbv2:loadbalancer"
+    name      = "SecurityGroups"
+    value     = aws_security_group.eb_security_group_lb.id
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:443"
+    name      = "SSLCertificateArns"
+    value     = "arn:aws:acm:eu-west-1:574836245203:certificate/40d2725e-4bb8-410e-bab4-c823767ebccd" # Replace with your SSL certificate ARN
+  }
+
+  # Optional: redirect HTTP to HTTPS
+  # setting {
+  #   namespace = "aws:elbv2:listener:80"
+  #   name      = "Rules"
+  #   value     = "path-pattern / -> forward: 443, path-pattern /* -> redirect: https://api.health.projects.bbdgrad.com#{path}?#{query}"
   # }
 
 }

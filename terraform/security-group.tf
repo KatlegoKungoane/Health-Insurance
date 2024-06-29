@@ -120,7 +120,7 @@ resource "aws_security_group" "eb_security_group_lb" {
 }
 
 
-# # Security group for the load balancer
+# Security group for the load balancer
 # resource "aws_security_group" "lb_sg" {
 #   vpc_id      = aws_vpc.vpc.id
 #   name        = "${var.project_name}-security-group-lb"

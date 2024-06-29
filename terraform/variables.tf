@@ -72,7 +72,7 @@ variable "eb_port_web" {
   default     = 80
 }
 
-variable "certificate" {
+variable "certificate_api" {
   type        = string
   description = "The number for the SSL certificate."
 }
