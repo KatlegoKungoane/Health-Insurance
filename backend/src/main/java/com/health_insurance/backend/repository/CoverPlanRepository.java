@@ -6,8 +6,6 @@ import com.health_insurance.backend.model.CoverPlan;
 
 import java.util.Optional;
 
-import java.util.Optional;
-
 public interface CoverPlanRepository extends JpaRepository<CoverPlan, Long> {
     Optional<CoverPlan> findByPersonaID(Long personaID);
 }

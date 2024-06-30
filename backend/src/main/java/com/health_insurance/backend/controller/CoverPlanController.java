@@ -64,14 +64,16 @@ public class CoverPlanController {
                     CoverPlan savedCoverPlan = coverPlanRepository.save(coverPlan);
     
                     List<String> dependents = (List<String>) personaData.get("dependents");
-                    for (String dependentIDStr: dependents) {
-                        Long dependentID = Long.valueOf(dependentIDStr);
-    
-                        Dependent dependent = new Dependent();
-                        dependent.setPersonaID(dependentID);
-                        dependent.setCoverPlan(savedCoverPlan);
-    
-                        dependentRepository.save(dependent);
+                    if (dependents != null) {
+                        for (String dependentIDStr: dependents) {
+                            Long dependentID = Long.valueOf(dependentIDStr);
+        
+                            Dependent dependent = new Dependent();
+                            dependent.setPersonaID(dependentID);
+                            dependent.setCoverPlan(savedCoverPlan);
+        
+                            dependentRepository.save(dependent);
+                        }
                     }
 
                     responseList.add(new AddCoverPlanDto("successful"));
