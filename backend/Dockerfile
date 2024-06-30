@@ -1,12 +1,11 @@
-# Build Stage
-FROM maven:3.8.6-openjdk-17 AS build
+FROM amazoncorretto:21-alpine-jdk AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
+RUN apk add maven
 RUN mvn clean package -DskipTests
-FROM openjdk:17-jdk-alpine
 WORKDIR /app
-COPY --from=build /app/target/backend-*.jar /app/app.jar
+COPY ./target/backend-*.jar ./app.jar
 EXPOSE 80
 EXPOSE 443
 ENTRYPOINT ["java","-jar","/app/app.jar"]
