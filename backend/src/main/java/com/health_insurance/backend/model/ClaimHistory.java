@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor 
 @AllArgsConstructor
 @Table(name = "ClaimHistory")
 public class ClaimHistory {
@@ -36,7 +36,6 @@ public class ClaimHistory {
     @Column(name = "claimPersonaID", nullable = false)
     private BigInteger claimPersonaID;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "timeStamp", nullable = false, updatable = false, columnDefinition = "default CURRENT_TIMESTAMP")
+    @Column(name = "timeStamp")
     private Date timeStamp;
 }
